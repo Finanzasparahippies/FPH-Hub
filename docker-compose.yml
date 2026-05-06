@@ -21,10 +21,10 @@ services:
       context: ./finanzasparahippies-front
       dockerfile: Dockerfile
     container_name: fph_frontend
-    volumes:
-      - ./finanzasparahippies-front:/app:z
-      - /app/node_modules
-      - /app/.next
+#    volumes:
+#      - ./finanzasparahippies-front:/app:z
+#      - /app/node_modules
+#      - /app/.next
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost/api
       - WATCHPACK_POLLING=true
