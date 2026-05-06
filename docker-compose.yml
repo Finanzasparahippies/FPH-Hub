@@ -41,8 +41,8 @@ services:
       - "80:80"
       - "443:443"
     environment:
-      - FPH_SSL_CERT_PATH=${FPH_SSL_CERT_PATH:-/etc/letsencrypt/live/finanzasparahippies.com-0001/fullchain.pem}
-      - FPH_SSL_KEY_PATH=${FPH_SSL_KEY_PATH:-/etc/letsencrypt/live/finanzasparahippies.com-0001/privkey.pem}
+      - FPH_SSL_CERT_PATH=/etc/letsencrypt/live/finanzasparahippies.com-0001/fullchain.pem
+      - FPH_SSL_KEY_PATH=/etc/letsencrypt/live/finanzasparahippies.com-0001/privkey.pem
       - NECTAR_SSL_CERT_PATH=${NECTAR_SSL_CERT_PATH:-/etc/nectar-ssl/live/nectarlabs.dev/fullchain.pem}
       - NECTAR_SSL_KEY_PATH=${NECTAR_SSL_KEY_PATH:-/etc/nectar-ssl/live/nectarlabs.dev/privkey.pem}
     volumes:
@@ -50,7 +50,7 @@ services:
       - ./finanzasparahippies-backend/static:/app/static:ro,z
       - ./finanzasparahippies-backend/media:/app/media:ro,z
       - ./nectar-ssl:/etc/nectar-ssl:ro,z
-      - ./letsencrypt:/etc/letsencrypt:ro,z
+      - /etc/letsencrypt:/etc/letsencrypt:ro,z
     depends_on:
       - backend
       - fph_frontend
