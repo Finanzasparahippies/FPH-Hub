@@ -5,6 +5,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'accent' | 'outline' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   href?: string;
+  fullWidth?: boolean;
   className?: string;
   children: React.ReactNode;
 }
@@ -13,6 +14,7 @@ export const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
   size = 'md',
   href,
+  fullWidth = false,
   className = '',
   children,
   ...props
@@ -33,7 +35,13 @@ export const Button: React.FC<ButtonProps> = ({
     lg: "px-10 py-5 text-sm rounded-2xl",
   };
 
-  const combinedClasses = `${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`;
+  const combinedClasses = `
+    ${baseStyles} 
+    ${variants[variant]} 
+    ${sizes[size]} 
+    ${fullWidth ? 'w-full' : ''} 
+    ${className}
+  `;
 
   if (href) {
     return (
