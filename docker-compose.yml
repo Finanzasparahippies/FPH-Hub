@@ -51,10 +51,10 @@ services:
       - fph_frontend
     networks:
       - default
-      - nectar-labs_default
+      - nectarlabs_default
 
 networks:
   default:
     driver: bridge
-  nectar-labs_default:
+  nectarlabs_default:
     external: true
