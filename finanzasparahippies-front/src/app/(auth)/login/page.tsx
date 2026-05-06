@@ -4,20 +4,26 @@ import React, { useState } from 'react';
 import { useAuth } from '../../../context/AuthContext';
 import Link from 'next/link';
 import { Layout } from '../../../components/layout/Layout';
+import Button from '../../../components/ui/Button';
+import Input from '../../../components/ui/Input';
 
 export default function LoginPage() {
     const { login } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
         setError('');
         try {
             await login(email, password);
         } catch (err) {
-            setError('Failed to login. Please check your credentials.');
+            setError('Credenciales incorrectas. Revisa tu email y contraseña.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -34,58 +40,58 @@ export default function LoginPage() {
                         <h2 className="text-4xl font-black tracking-tight text-foreground uppercase leading-none">
                             ¡Bienvenido <br /> de vuelta!
                         </h2>
-                        <p className="mt-4 text-foreground/70 font-bold">Inicia sesión en la tribu</p>
+                        <p className="mt-4 text-foreground/70 font-bold uppercase text-[10px] tracking-[0.3em]">Acceso a la Tribu Hippie</p>
                     </div>
 
-                    <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-                        <div className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-black uppercase mb-2 ml-1">Correo electrónico</label>
-                                <input
-                                    id="email-address"
-                                    name="email"
-                                    type="email"
-                                    autoComplete="email"
-                                    required
-                                    className="block w-full cartoon-border bg-white py-4 text-foreground placeholder:text-gray-400 focus:ring-0 text-lg font-bold px-6 transition-all focus:translate-x-1 focus:translate-y-1"
-                                    placeholder="hola@hippie.com"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-black uppercase mb-2 ml-1">Contraseña</label>
-                                <input
-                                    id="password"
-                                    name="password"
-                                    type="password"
-                                    autoComplete="current-password"
-                                    required
-                                    className="block w-full cartoon-border bg-white py-4 text-foreground placeholder:text-gray-400 focus:ring-0 text-lg font-bold px-6 transition-all focus:translate-x-1 focus:translate-y-1"
-                                    placeholder="••••••••"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                />
-                            </div>
+                    <form className="mt-8 space-y-8" onSubmit={handleSubmit}>
+                        <div className="space-y-6">
+                            <Input
+                                label="Correo electrónico"
+                                id="email-address"
+                                name="email"
+                                type="email"
+                                autoComplete="email"
+                                required
+                                placeholder="hola@hippie.com"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                            <Input
+                                label="Tu llave secreta"
+                                id="password"
+                                name="password"
+                                type="password"
+                                autoComplete="current-password"
+                                required
+                                placeholder="••••••••"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
                         </div>
 
                         {error && (
-                            <div className="bg-accent/10 border-2 border-accent p-4 rounded-xl text-accent font-black text-center rotate-1 animate-wobble">
-                                {error}
+                            <div className="bg-accent/10 border-3 border-foreground p-4 rounded-xl text-foreground font-black text-xs text-center rotate-1 animate-wobble">
+                                <span className="text-accent">ERROR:</span> {error}
                             </div>
                         )}
 
-                        <button
+                        <Button
                             type="submit"
-                            className="w-full btn-cartoon bg-secondary text-white py-5 text-xl font-black uppercase tracking-widest"
+                            variant="secondary"
+                            size="lg"
+                            className="w-full text-xl shadow-[10px_10px_0px_0px_var(--foreground)]"
+                            disabled={loading}
                         >
-                            Entrar 🚀
-                        </button>
+                            {loading ? 'Sincronizando...' : 'Entrar 🚀'}
+                        </Button>
 
-                        <div className="text-center mt-8">
-                            <Link href="/register" className="font-black text-foreground hover:text-secondary border-b-4 border-primary transition-colors pb-1">
-                                ¿No tienes cuenta? Únete aquí
-                            </Link>
+                        <div className="text-center mt-10">
+                            <p className="text-xs font-bold opacity-60 uppercase tracking-widest">
+                                ¿Eres nuevo por aquí?{' '}
+                                <Link href="/register" className="text-secondary hover:text-primary transition-colors border-b-2 border-primary">
+                                    Únete a la tribu
+                                </Link>
+                            </p>
                         </div>
                     </form>
                 </div>

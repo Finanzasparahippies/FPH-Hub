@@ -26,7 +26,7 @@ services:
 #      - /app/node_modules
 #      - /app/.next
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost/api
+      - NEXT_PUBLIC_API_URL=https://localhost/api
       - WATCHPACK_POLLING=true
       - NODE_ENV=development
     ports:
@@ -44,8 +44,8 @@ services:
       - ./nginx:/etc/nginx/conf.d:ro,z
       - ./finanzasparahippies-backend/static:/app/static:ro,z
       - ./finanzasparahippies-backend/media:/app/media:ro,z
-      - nectarlabs_certbot-conf:/etc/nectar-ssl:ro
-      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - ./nectar-ssl:/etc/nectar-ssl:ro,z
+      - ./letsencrypt:/etc/letsencrypt:ro,z
     depends_on:
       - backend
       - fph_frontend

@@ -1,29 +1,36 @@
 import React from 'react';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-    label?: string;
-    error?: string;
+  label?: string;
+  error?: string;
+  className?: string;
 }
 
-export const Input: React.FC<InputProps> = ({
-    label,
-    error,
-    className = '',
-    ...props
-}) => {
-    return (
-        <div className="mb-4">
-            {label && (
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                    {label}
-                </label>
-            )}
-            <input
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${error ? 'border-red-500' : 'border-gray-300'
-                    } ${className}`}
-                {...props}
-            />
-            {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
-        </div>
-    );
+const Input: React.FC<InputProps> = ({ label, error, className = '', ...props }) => {
+  return (
+    <div className="w-full space-y-2">
+      {label && (
+        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground opacity-60 ml-4">
+          {label}
+        </label>
+      )}
+      <input
+        className={`
+          w-full px-6 py-4 bg-background border-3 border-foreground rounded-2xl 
+          focus:border-primary outline-none transition-all font-bold text-foreground
+          placeholder:opacity-30 placeholder:font-medium
+          ${error ? 'border-accent' : 'border-foreground'}
+          ${className}
+        `}
+        {...props}
+      />
+      {error && (
+        <p className="text-[10px] font-bold text-accent ml-4 mt-1 uppercase tracking-wider">
+          {error}
+        </p>
+      )}
+    </div>
+  );
 };
+
+export default Input;

@@ -124,7 +124,8 @@ MIDDLEWARE = [
 
 CSRF_TRUSTED_ORIGINS = [
     "https://finanzasparahippies.com",
-    "https://www.finanzasparahippies.com"
+    "https://www.finanzasparahippies.com",
+    "https://localhost"
 ]
 
 #CORS
@@ -132,7 +133,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "https://www.finanzasparahippies.com",
-    "https://finanzasparahippies.com"
+    "https://finanzasparahippies.com",
+    "https://localhost"
 ]
 
 CORS_ALLOW_CREDENTIALS = True

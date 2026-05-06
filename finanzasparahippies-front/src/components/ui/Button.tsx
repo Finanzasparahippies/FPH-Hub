@@ -1,31 +1,53 @@
 import React from 'react';
+import Link from 'next/link';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    variant?: 'primary' | 'secondary' | 'outline' | 'accent';
-    fullWidth?: boolean;
+  variant?: 'primary' | 'secondary' | 'accent' | 'outline' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
+  href?: string;
+  className?: string;
+  children: React.ReactNode;
 }
 
-export const Button: React.FC<ButtonProps> = ({
-    children,
-    variant = 'primary',
-    fullWidth = false,
-    className = '',
-    ...props
+const Button: React.FC<ButtonProps> = ({
+  variant = 'primary',
+  size = 'md',
+  href,
+  className = '',
+  children,
+  ...props
 }) => {
-    const baseStyles = 'transition-all duration-300 cursor-pointer text-center animate-wobble';
-    const variants = {
-        primary: 'btn-cartoon',
-        secondary: 'btn-cartoon bg-secondary text-white',
-        accent: 'btn-accent',
-        outline: 'btn-cartoon bg-white text-foreground'
-    };
+  const baseStyles = "inline-flex items-center justify-center font-black uppercase tracking-widest transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:pointer-events-none";
+  
+  const variants = {
+    primary: "bg-primary text-foreground border-3 border-foreground shadow-cartoon hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_var(--foreground)]",
+    secondary: "bg-secondary text-white border-3 border-foreground shadow-cartoon hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_var(--foreground)]",
+    accent: "bg-accent text-white border-3 border-foreground shadow-cartoon hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_var(--foreground)]",
+    outline: "bg-transparent text-foreground border-3 border-foreground hover:bg-foreground/5",
+    ghost: "bg-transparent text-foreground hover:bg-foreground/5 border-none shadow-none",
+  };
 
+  const sizes = {
+    sm: "px-4 py-2 text-[10px] rounded-lg",
+    md: "px-8 py-4 text-xs rounded-xl",
+    lg: "px-10 py-5 text-sm rounded-2xl",
+  };
+
+  const combinedClasses = `${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`;
+
+  if (href) {
     return (
-        <button
-            className={`${baseStyles} ${variants[variant]} ${fullWidth ? 'w-full' : ''} ${className}`}
-            {...props}
-        >
-            {children}
-        </button>
+      <Link href={href} className={combinedClasses}>
+        {children}
+      </Link>
     );
+  }
+
+  return (
+    <button className={combinedClasses} {...props}>
+      {children}
+    </button>
+  );
 };
+
+export default Button;

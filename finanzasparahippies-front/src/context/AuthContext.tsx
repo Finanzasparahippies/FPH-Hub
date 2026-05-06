@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useState, useEffect, useContext } from "react";
-import api from "../services/api";
+import api from "../lib/api";
 import { useRouter } from "next/navigation";
 
 interface User {
@@ -10,6 +10,7 @@ interface User {
     username: string;
     first_name: string;
     last_name: string;
+    role: string;
     is_staff: boolean;
 }
 
@@ -29,34 +30,50 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter();
 
     useEffect(() => {
+        console.log("AuthProvider: Initial check...");
         checkUserLoggedIn();
     }, []);
 
     const checkUserLoggedIn = async () => {
         const token = localStorage.getItem("access");
+        console.log("checkUserLoggedIn: Token found?", !!token);
+        
         if (token) {
             try {
                 const response = await api.get("/auth/users/me/");
+                console.log("checkUserLoggedIn: User data received:", response.data);
                 setUser(response.data);
             } catch (error) {
-                console.error("User validation failed", error);
+                console.error("checkUserLoggedIn: User validation failed", error);
                 setUser(null);
             }
+        } else {
+            setUser(null);
         }
         setLoading(false);
     };
 
     const login = async (email: string, password: string) => {
         try {
+            console.log("Login: Attempting login for", email);
             const response = await api.post("/auth/jwt/create/", { email, password });
+            
             if (response.status === 200) {
+                console.log("Login: Success! Saving tokens...");
                 localStorage.setItem("access", response.data.access);
                 localStorage.setItem("refresh", response.data.refresh);
-                await checkUserLoggedIn();
-                router.push("/blog");
+                
+                // Wait for the user data to be fetched before redirecting
+                console.log("Login: Fetching user details...");
+                const userResponse = await api.get("/auth/users/me/");
+                console.log("Login: User details received:", userResponse.data);
+                setUser(userResponse.data);
+                
+                console.log("Login: Redirecting to dashboard...");
+                router.push("/dashboard");
             }
         } catch (error) {
-            console.error("Login failed", error);
+            console.error("Login: failed", error);
             throw error;
         }
     };
@@ -71,8 +88,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 turnstile_token
             });
             if (response.status === 201) {
-                // Automatically login or redirect to login? 
-                // Let's redirect to login for now
                 router.push("/login");
             }
         } catch (error) {
@@ -82,10 +97,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     const logout = () => {
+        console.log("Logout: Cleaning session...");
         localStorage.removeItem("access");
         localStorage.removeItem("refresh");
         setUser(null);
-        router.push("/login"); // or home
+        router.push("/login");
     };
 
     return (

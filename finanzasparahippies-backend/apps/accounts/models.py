@@ -31,13 +31,24 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    class Role(models.TextChoices):
+        ADMIN = 'ADMIN', 'Administrator'
+        STUDENT = 'STUDENT', 'Student'
+        COACH = 'COACH', 'Coach'
+        GUEST = 'GUEST', 'Guest'
+
     email = models.EmailField(unique=True)
     username = models.CharField(
-    max_length=30,
-    unique=True,
-    blank=True,
-    null=True,
-    help_text="Nombre público opcional"
+        max_length=30,
+        unique=True,
+        blank=True,
+        null=True,
+        help_text="Nombre público opcional"
+    )
+    role = models.CharField(
+        max_length=20,
+        choices=Role.choices,
+        default=Role.STUDENT
     )
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
