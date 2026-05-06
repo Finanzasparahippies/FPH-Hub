@@ -40,8 +40,13 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    environment:
+      - FPH_SSL_CERT_PATH=${FPH_SSL_CERT_PATH:-/etc/letsencrypt/live/finanzasparahippies.com-0001/fullchain.pem}
+      - FPH_SSL_KEY_PATH=${FPH_SSL_KEY_PATH:-/etc/letsencrypt/live/finanzasparahippies.com-0001/privkey.pem}
+      - NECTAR_SSL_CERT_PATH=${NECTAR_SSL_CERT_PATH:-/etc/nectar-ssl/live/nectarlabs.dev/fullchain.pem}
+      - NECTAR_SSL_KEY_PATH=${NECTAR_SSL_KEY_PATH:-/etc/nectar-ssl/live/nectarlabs.dev/privkey.pem}
     volumes:
-      - ./nginx:/etc/nginx/conf.d:ro,z
+      - ./nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro,z
       - ./finanzasparahippies-backend/static:/app/static:ro,z
       - ./finanzasparahippies-backend/media:/app/media:ro,z
       - ./nectar-ssl:/etc/nectar-ssl:ro,z
