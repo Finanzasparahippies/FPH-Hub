@@ -1,0 +1,5 @@
+.color1 { #0d0f36 }; (color oscuro)
+.color2 { #294380 };
+.color3 { #69d2cd }; (color principal)
+.color4 { #b9f1d6 };
+.color5 { #f1f6ce }; (color principal claro)

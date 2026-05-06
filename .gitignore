@@ -1,0 +1,30 @@
+# Datos y Entorno
+.env
+.env.*
+data/
+db.sqlite3
+*.log
+
+# Node / Frontend
+node_modules/
+.next/
+out/
+build/
+.vercel
+
+# Python / Backend
+__pycache__/
+*.py[cod]
+*$py.class
+env/
+venv/
+.venv/
+static/
+media/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store

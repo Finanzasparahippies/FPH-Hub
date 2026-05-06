@@ -1,0 +1,60 @@
+services:
+  backend:
+    build:
+      context: ./finanzasparahippies-backend
+      dockerfile: Dockerfile
+    container_name: fph_backend
+    restart: always
+    env_file:
+      - ./finanzasparahippies-backend/.env
+    environment:
+      - PYTHONPATH=/app
+      - DEBUG=True
+    volumes:
+      - ./finanzasparahippies-backend:/app:z
+    expose:
+      - 8000
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3
+
+  fph_frontend:
+    build:
+      context: ./finanzasparahippies-front
+      dockerfile: Dockerfile
+    container_name: fph_frontend
+    volumes:
+      - ./finanzasparahippies-front:/app:z
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost/api
+      - WATCHPACK_POLLING=true
+      - NODE_ENV=development
+    ports:
+      - "3001:3000"
+    restart: always
+
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: fph_nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d:ro,z
+      - ./finanzasparahippies-backend/static:/app/static:ro,z
+      - ./finanzasparahippies-backend/media:/app/media:ro,z
+      - /home/saul/nectarlabs/nectarlabs/data/certbot/conf:/etc/nectar-ssl:ro
+      - /path/to/fph/certs:/etc/letsencrypt:ro
+    depends_on:
+      - backend
+      - fph_frontend
+    networks:
+      - default
+      - nectar-labs_default
+
+networks:
+  default:
+    driver: bridge
+  nectar-labs_default:
+    external: true

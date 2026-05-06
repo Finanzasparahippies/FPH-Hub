@@ -1,0 +1,162 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f1f6ce; /* Color 5: Crema suave */
+  --foreground: #0d0f36; /* Color 1: Azul profundo */
+  --primary: #69d2cd;    /* Color 3: Turquesa Hippie (Principal) */
+  --secondary: #294380;  /* Color 2: Azul vibrante */
+  --tertiary: #b9f1d6;   /* Color 4: Verde menta */
+  --accent: #ff7e67;     /* Un coral vibrante para acentos hippie */
+}
+
+.dark {
+  --background: #0d0f36; /* Azul profundo */
+  --foreground: #f1f6ce; /* Crema suave */
+  --primary: #69d2cd;    /* Turquesa Hippie (Light on Dark) */
+  --secondary: #ff7e67;  /* Coral vibrante */
+  --tertiary: #1a1c4e;   /* Azul para cards */
+  --accent: #b9f1d6;     /* Verde menta */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-tertiary: var(--tertiary);
+  --color-accent: var(--accent);
+  --font-sans: var(--font-comic), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-luckiest-guy), var(--font-playfair), serif;
+  --font-hippie: var(--font-bangers), cursive;
+  
+  --shadow-cartoon: 6px 6px 0px 0px var(--foreground);
+  --shadow-cartoon-sm: 3px 3px 0px 0px var(--foreground);
+}
+
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(1deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+@keyframes wobble {
+  0% { transform: scale(1); }
+  25% { transform: scale(0.97) rotate(-1deg); }
+  75% { transform: scale(1.03) rotate(1deg); }
+  100% { transform: scale(1); }
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  background-image: 
+    radial-gradient(var(--tertiary) 1.5px, transparent 1.5px);
+  background-size: 30px 30px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: 900;
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  text-shadow: 2px 2px 0px var(--tertiary);
+  transform: rotate(-1deg);
+}
+
+/* --- COMPONENTES CARTOON PRO --- */
+
+/* Botones: Comparten estructura base */
+.btn-cartoon, 
+.btn-sketchy, 
+.btn-journal,
+.btn-accent {
+  display: inline-block;
+  font-weight: 900;
+  padding: 1rem 2rem;
+  border: 3px solid var(--foreground);
+  border-radius: 12px;
+  background-color: var(--primary);
+  color: var(--foreground);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: var(--shadow-cartoon);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Variación Accent */
+.btn-accent {
+  background-color: var(--accent);
+  color: #ffffff;
+}
+
+/* Hovers y Actives para todos los botones */
+.btn-cartoon:hover, .btn-sketchy:hover, .btn-journal:hover, .btn-accent:hover {
+  transform: scale(1.02) translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px var(--foreground);
+  filter: brightness(1.05);
+}
+
+.btn-cartoon:active, .btn-sketchy:active, .btn-journal:active, .btn-accent:active {
+  transform: scale(0.98) translate(1px, 1px);
+  box-shadow: 2px 2px 0px 0px var(--foreground);
+}
+
+/* Cards: Comparten estructura base */
+.cartoon-card, 
+.card-sketchy, 
+.card-journal {
+  background-color: var(--background);
+  color: var(--foreground);
+  border: 3px solid var(--foreground);
+  border-radius: 20px;
+  box-shadow: var(--shadow-cartoon);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  padding: 2rem;
+  position: relative;
+}
+
+/* Ajuste específico para cards blancas en light mode que deben ser oscuras en dark mode */
+.bg-white {
+  background-color: #ffffff !important;
+}
+
+.dark .bg-white {
+  background-color: var(--tertiary) !important;
+}
+
+.dark .cartoon-card {
+  background-color: var(--tertiary);
+}
+
+.cartoon-card:hover, .card-sketchy:hover, .card-journal:hover {
+  transform: translate(-4px, -4px) scale(1.01);
+  box-shadow: 12px 12px 0px 0px var(--foreground);
+}
+
+/* Bordes orgánicos */
+.cartoon-border {
+  border: 3px solid var(--foreground);
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+}
+
+/* Utilidades de Animación */
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-wobble:hover {
+  animation: wobble 0.3s ease-in-out;
+}
+
+.hippie-gradient {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--tertiary) 100%);
+}
