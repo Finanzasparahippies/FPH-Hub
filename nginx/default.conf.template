@@ -30,6 +30,8 @@ server {
     ssl_certificate ${FPH_SSL_CERT_PATH};
     ssl_certificate_key ${FPH_SSL_KEY_PATH};
 
+    add_header Content-Security-Policy "upgrade-insecure-requests";
+
     location /static/ {
         alias /app/static/;
     }
