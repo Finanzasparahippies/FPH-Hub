@@ -6,7 +6,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   className?: string;
 }
 
-const Input: React.FC<InputProps> = ({ label, error, className = '', ...props }) => {
+export const Input: React.FC<InputProps> = ({ label, error, className = '', ...props }) => {
   return (
     <div className="w-full space-y-2">
       {label && (
@@ -32,5 +32,3 @@ const Input: React.FC<InputProps> = ({ label, error, className = '', ...props })
     </div>
   );
 };
-
-export default Input;
