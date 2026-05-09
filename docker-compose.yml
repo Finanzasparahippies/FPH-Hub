@@ -28,7 +28,7 @@ services:
 #      - /app/node_modules
 #      - /app/.next
     environment:
-      - NEXT_PUBLIC_API_URL=https://localhost/api
+      - NEXT_PUBLIC_API_URL=http://finanzasparahippies.localhost/api
       - WATCHPACK_POLLING=true
       - NODE_ENV=development
     ports:
@@ -37,30 +37,30 @@ services:
     networks:
        - prod_network
 
-  nginx:
-    image: nginx:1.25-alpine
-    container_name: fph_nginx
-    restart: always
-#    ports:
-#      - "80:80"
-#      - "443:443"
-    environment:
-      - FPH_SSL_CERT_PATH=/etc/letsencrypt/live/finanzasparahippies.com-0001/fullchain.pem
-      - FPH_SSL_KEY_PATH=/etc/letsencrypt/live/finanzasparahippies.com-0001/privkey.pem
-      - NECTAR_SSL_CERT_PATH=${NECTAR_SSL_CERT_PATH:-/etc/nectar-ssl/live/nectarlabs.dev/fullchain.pem}
-      - NECTAR_SSL_KEY_PATH=${NECTAR_SSL_KEY_PATH:-/etc/nectar-ssl/live/nectarlabs.dev/privkey.pem}
-    volumes:
-      - ./nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro,z
-      - ./finanzasparahippies-backend/static:/app/static:ro,z
-      - ./finanzasparahippies-backend/media:/app/media:ro,z
-      - ./nectar-ssl:/etc/nectar-ssl:ro,z
-      - /etc/letsencrypt:/etc/letsencrypt:ro,z
-    depends_on:
-      - backend
-      - fph_frontend
-    networks:
-      - default
-      - prod_network
+#   nginx:
+#     image: nginx:1.25-alpine
+#     container_name: fph_nginx
+#     restart: always
+# #    ports:
+# #      - "80:80"
+# #      - "443:443"
+#     environment:
+#       - FPH_SSL_CERT_PATH=/etc/letsencrypt/live/finanzasparahippies.com-0001/fullchain.pem
+#       - FPH_SSL_KEY_PATH=/etc/letsencrypt/live/finanzasparahippies.com-0001/privkey.pem
+#       - NECTAR_SSL_CERT_PATH=${NECTAR_SSL_CERT_PATH:-/etc/nectar-ssl/live/nectarlabs.dev/fullchain.pem}
+#       - NECTAR_SSL_KEY_PATH=${NECTAR_SSL_KEY_PATH:-/etc/nectar-ssl/live/nectarlabs.dev/privkey.pem}
+#     volumes:
+#       - ./nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro,z
+#       - ./finanzasparahippies-backend/static:/app/static:ro,z
+#       - ./finanzasparahippies-backend/media:/app/media:ro,z
+#       - ./nectar-ssl:/etc/nectar-ssl:ro,z
+#       - /etc/letsencrypt:/etc/letsencrypt:ro,z
+#     depends_on:
+#       - backend
+#       - fph_frontend
+#     networks:
+#       - default
+#       - prod_network
 
 networks:
   default:
