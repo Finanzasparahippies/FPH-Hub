@@ -10,10 +10,11 @@ function help() {
     echo ""
     echo "Commands:"
     echo "  dev         Start development environment"
+    echo "  staging     Start staging environment"
     echo "  prod        Start production environment"
     echo "  stop        Stop all containers"
     echo "  restart     Restart all containers"
-    echo "  logs        Show logs from all containers"
+    echo "  logs [env]  Show logs (optional: staging, prod)"
     echo "  build       Rebuild images"
     echo "  shell       Enter backend shell"
     echo "  superuser   Create a Django superuser"
@@ -23,18 +24,11 @@ function help() {
 
 case "$1" in
     dev)
-        echo "Checking environment dependencies..."
-        # Create network if it doesn't exist
-        docker network inspect nectarlabs_default >/dev/null 2>&1 || {
-            echo "Creating network: nectarlabs_default"
-            docker network create nectarlabs_default
-        }
+        echo "Ensuring shared network 'prod_network' exists..."
+        docker network inspect prod_network >/dev/null 2>&1 || docker network create prod_network
         
-        # Create missing external volumes if they don't exist
-        docker volume inspect nectarlabs_certbot-conf >/dev/null 2>&1 || {
-            echo "Creating volume: nectarlabs_certbot-conf"
-            docker volume create nectarlabs_certbot-conf
-        }
+        # Original dependencies
+        docker volume inspect nectarlabs_certbot-conf >/dev/null 2>&1 || docker volume create nectarlabs_certbot-conf
 
         # Handle local SSL certificates for FPH
         mkdir -p ./letsencrypt/live/finanzasparahippies.com-0001
@@ -45,39 +39,32 @@ case "$1" in
                 -out ./letsencrypt/live/finanzasparahippies.com-0001/fullchain.pem \
                 -subj "/C=MX/ST=CDMX/L=CDMX/O=FPH/OU=Dev/CN=localhost"
         fi
-        # Ensure permissions are correct every time for dev
         chmod -R 755 ./letsencrypt
-        find ./letsencrypt -type f -name "*.pem" -exec chmod 644 {} +
-
-        # Handle local SSL certificates for Nectar
-        mkdir -p ./nectar-ssl/live/nectarlabs.dev
-        if [ ! -f ./nectar-ssl/live/nectarlabs.dev/fullchain.pem ]; then
-            echo "Generating dummy Nectar SSL certificates for local development..."
-            openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-                -keyout ./nectar-ssl/live/nectarlabs.dev/privkey.pem \
-                -out ./nectar-ssl/live/nectarlabs.dev/fullchain.pem \
-                -subj "/C=MX/ST=CDMX/L=CDMX/O=Nectar/OU=Dev/CN=localhost"
-        fi
-        # Ensure permissions are correct every time for dev
-        chmod -R 755 ./nectar-ssl
-        find ./nectar-ssl -type f -name "*.pem" -exec chmod 644 {} +
-            
-        docker compose up
+        
+        docker compose up -d
+        ;;
+    staging)
+        echo "Starting FPH Staging Environment..."
+        docker network inspect prod_network >/dev/null 2>&1 || docker network create prod_network
+        docker compose -f docker-compose.staging.yml up -d --build
         ;;
     prod)
-        # On server, link local cert dirs to the system ones if they don't exist
-        [ -L ./letsencrypt ] || [ -d ./letsencrypt ] || ln -s /etc/letsencrypt ./letsencrypt
-        [ -L ./nectar-ssl ] || [ -d ./nectar-ssl ] || ln -s /etc/nectar-ssl ./nectar-ssl
         docker compose up -d
         ;;
     stop)
-        docker compose stop
+        docker compose down
+        docker compose -f docker-compose.staging.yml down
         ;;
     restart)
         docker compose restart
         ;;
     logs)
-        docker compose logs -f
+        ENV=$2
+        if [ "$ENV" == "staging" ]; then
+            docker compose -f docker-compose.staging.yml logs -f
+        else
+            docker compose logs -f
+        fi
         ;;
     build)
         docker compose build

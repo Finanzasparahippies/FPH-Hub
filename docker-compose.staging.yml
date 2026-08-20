@@ -1,0 +1,49 @@
+services:
+  fph-db-staging:
+    image: postgres:16-alpine
+    container_name: fph_db_staging
+    volumes:
+      - postgres_data_staging:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=fph_staging
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - prod_network
+
+  fph-backend-staging:
+    build:
+      context: ./finanzasparahippies-backend
+      dockerfile: Dockerfile
+    container_name: fph_backend_staging
+    restart: always
+    env_file:
+      - .env.staging
+    environment:
+      - PYTHONPATH=/app
+      - DEBUG=True
+    volumes:
+      - ./finanzasparahippies-backend:/app:z
+    depends_on:
+      - fph-db-staging
+    networks:
+      - prod_network
+
+  frontend-staging:
+    build:
+      context: ./finanzasparahippies-front
+      dockerfile: Dockerfile
+    container_name: fph_frontend_staging
+    environment:
+      - NEXT_PUBLIC_API_URL=http://staging.fph.localhost/api
+      - NODE_ENV=development
+    restart: always
+    networks:
+      - prod_network
+
+volumes:
+  postgres_data_staging:
+
+networks:
+  prod_network:
+    external: true

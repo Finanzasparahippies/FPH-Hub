@@ -13,6 +13,9 @@ const nextConfig = {
       }
     ],
   },
+  experimental: {
+    allowedDevOrigins: ['staging.fph.localhost'],
+  },
 };
 
 export default nextConfig;
