@@ -2,30 +2,21 @@
 
 import './styles/globals.css';
 import type { Metadata } from 'next';
-import { Comic_Neue, Playfair_Display, Luckiest_Guy, Bangers } from 'next/font/google';
+import { Plus_Jakarta_Sans, Outfit } from 'next/font/google';
 import Script from 'next/script';
 
-const comic = Comic_Neue({ 
-  weight: ['300', '400', '700'],
+const jakarta = Plus_Jakarta_Sans({ 
+  weight: ['400', '500', '600', '700', '800'],
   subsets: ['latin'],
-  variable: '--font-comic',
+  display: 'swap',
+  variable: '--font-sans',
 });
 
-const playfair = Playfair_Display({
+const outfit = Outfit({
+  weight: ['500', '700', '800', '900'],
   subsets: ['latin'],
-  variable: '--font-playfair',
-});
-
-const luckiestGuy = Luckiest_Guy({
-  weight: '400',
-  subsets: ['latin'],
-  variable: '--font-luckiest-guy',
-});
-
-const bangers = Bangers({
-  weight: '400',
-  subsets: ['latin'],
-  variable: '--font-bangers',
+  display: 'swap',
+  variable: '--font-display',
 });
 
 export const metadata: Metadata = {
@@ -44,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={`${comic.variable} ${playfair.variable} ${luckiestGuy.variable} ${bangers.variable} ${comic.className}`}>
+    <html lang="es" className={`${jakarta.variable} ${outfit.variable} ${jakarta.className}`}>
       <head>
         <Script
           async

@@ -38,17 +38,30 @@
   --color-text-gray: #6d6168;
   --color-soft-ivory: #f2ecdc;
 
-  --font-sans: var(--font-comic), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-luckiest-guy), var(--font-playfair), serif;
-  --font-hippie: var(--font-bangers), cursive;
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display), var(--font-sans), sans-serif;
   
   --shadow-cartoon: 6px 6px 0px 0px var(--foreground);
   --shadow-cartoon-sm: 3px 3px 0px 0px var(--foreground);
 }
 
+/* Suavizado Tipográfico Global para Nitidez Absoluta */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
 /* Transiciones Suaves para Cambio de Tema (Eye-Strain Reduction & Performance) */
 body, .cartoon-card, .card-sketchy, .card-journal, .btn-cartoon, .btn-sketchy, .btn-journal, .btn-accent, nav, footer, header {
   transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease;
+}
+
+/* Aceleración Quirúrgica por GPU en Hover (Elimina Borrosidad sin sobrecargar Memoria) */
+.cartoon-card:hover, .card-sketchy:hover, .btn-cartoon:hover, .btn-accent:hover {
+  will-change: transform;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
 }
 
 @keyframes float {
@@ -76,13 +89,13 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-serif);
-  font-weight: 900;
-  line-height: 1.1;
+  font-family: var(--font-display), var(--font-sans), sans-serif;
+  font-weight: 800;
+  line-height: 1.15;
   text-transform: uppercase;
-  letter-spacing: -0.02em;
-  text-shadow: 2px 2px 0px var(--neutral);
-  transform: rotate(-0.5deg);
+  letter-spacing: -0.015em;
+  text-shadow: none;
+  transform: none;
 }
 
 /* --- COMPONENTES CARTOON PRO --- */
