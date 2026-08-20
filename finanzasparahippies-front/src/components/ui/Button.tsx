@@ -22,8 +22,8 @@ export const Button: React.FC<ButtonProps> = ({
   const baseStyles = "inline-flex items-center justify-center font-black uppercase tracking-widest transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:pointer-events-none";
   
   const variants = {
-    primary: "bg-primary text-foreground border-3 border-foreground shadow-cartoon hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_var(--foreground)]",
-    secondary: "bg-secondary text-white border-3 border-foreground shadow-cartoon hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_var(--foreground)]",
+    primary: "bg-primary text-[#361542] border-3 border-foreground shadow-cartoon hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_var(--foreground)]",
+    secondary: "bg-secondary text-[#f2ecdc] border-3 border-foreground shadow-cartoon hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_var(--foreground)]",
     accent: "bg-accent text-white border-3 border-foreground shadow-cartoon hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_var(--foreground)]",
     outline: "bg-transparent text-foreground border-3 border-foreground hover:bg-foreground/5",
     ghost: "bg-transparent text-foreground hover:bg-foreground/5 border-none shadow-none",

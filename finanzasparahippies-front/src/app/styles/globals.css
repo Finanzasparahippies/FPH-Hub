@@ -1,21 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f1f6ce; /* Color 5: Crema suave */
-  --foreground: #0d0f36; /* Color 1: Azul profundo */
-  --primary: #69d2cd;    /* Color 3: Turquesa Hippie (Principal) */
-  --secondary: #294380;  /* Color 2: Azul vibrante */
-  --tertiary: #b9f1d6;   /* Color 4: Verde menta */
-  --accent: #ff7e67;     /* Un coral vibrante para acentos hippie */
+  --background: #f2ecdc; /* Color Hueso / Marfil Suave */
+  --foreground: #361542; /* Color Púrpura Profundo */
+  --primary: #0de5a8;    /* Verde Neón / Esmeralda (Acento Principal) */
+  --secondary: #361542;  /* Púrpura Profundo (Secundario) */
+  --tertiary: #ffffff;   /* Blanco puro para tarjetas en modo claro */
+  --accent: #f05d67;     /* Rojo Vibrante (Alertas / Warning) */
+  --neutral: #6d6168;    /* Gris Textual / Neutro */
+  --bone: #f2ecdc;       /* Marfil Suave */
 }
 
 .dark {
-  --background: #0d0f36; /* Azul profundo */
-  --foreground: #f1f6ce; /* Crema suave */
-  --primary: #69d2cd;    /* Turquesa Hippie (Light on Dark) */
-  --secondary: #ff7e67;  /* Coral vibrante */
-  --tertiary: #1a1c4e;   /* Azul para cards */
-  --accent: #b9f1d6;     /* Verde menta */
+  --background: #361542; /* Púrpura Profundo */
+  --foreground: #f2ecdc; /* Hueso / Marfil Suave */
+  --primary: #0de5a8;    /* Verde Neón / Esmeralda */
+  --secondary: #f05d67;  /* Rojo Vibrante */
+  --tertiary: #240d2d;   /* Púrpura Extra Profundo para Tarjetas */
+  --accent: #0de5a8;     /* Verde Neón */
+  --neutral: #6d6168;    /* Gris Textual */
+  --bone: #f2ecdc;       /* Marfil Suave */
 }
 
 @theme inline {
@@ -25,12 +29,26 @@
   --color-secondary: var(--secondary);
   --color-tertiary: var(--tertiary);
   --color-accent: var(--accent);
+  --color-neutral: var(--neutral);
+  --color-bone: var(--bone);
+  
+  --color-neon-emerald: #0de5a8;
+  --color-vibrant-red: #f05d67;
+  --color-deep-purple: #361542;
+  --color-text-gray: #6d6168;
+  --color-soft-ivory: #f2ecdc;
+
   --font-sans: var(--font-comic), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-luckiest-guy), var(--font-playfair), serif;
   --font-hippie: var(--font-bangers), cursive;
   
   --shadow-cartoon: 6px 6px 0px 0px var(--foreground);
   --shadow-cartoon-sm: 3px 3px 0px 0px var(--foreground);
+}
+
+/* Transiciones Suaves para Cambio de Tema (Eye-Strain Reduction & Performance) */
+body, .cartoon-card, .card-sketchy, .card-journal, .btn-cartoon, .btn-sketchy, .btn-journal, .btn-accent, nav, footer, header {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease;
 }
 
 @keyframes float {
@@ -51,8 +69,8 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
   background-image: 
-    radial-gradient(var(--tertiary) 1.5px, transparent 1.5px);
-  background-size: 30px 30px;
+    radial-gradient(var(--neutral) 1px, transparent 1px);
+  background-size: 32px 32px;
   line-height: 1.6;
   overflow-x: hidden;
 }
@@ -63,27 +81,25 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.1;
   text-transform: uppercase;
   letter-spacing: -0.02em;
-  text-shadow: 2px 2px 0px var(--tertiary);
-  transform: rotate(-1deg);
+  text-shadow: 2px 2px 0px var(--neutral);
+  transform: rotate(-0.5deg);
 }
 
 /* --- COMPONENTES CARTOON PRO --- */
 
-/* Botones: Comparten estructura base */
+/* Botones: Estructura Base y Accesibilidad WCAG AAA */
 .btn-cartoon, 
 .btn-sketchy, 
-.btn-journal,
-.btn-accent {
+.btn-journal {
   display: inline-block;
   font-weight: 900;
   padding: 1rem 2rem;
   border: 3px solid var(--foreground);
   border-radius: 12px;
   background-color: var(--primary);
-  color: var(--foreground);
+  color: #361542; /* WCAG AAA: Texto Púrpura Profundo sobre Verde Neón #0de5a8 (>7:1 ratio) */
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   box-shadow: var(--shadow-cartoon);
   text-align: center;
   text-transform: uppercase;
@@ -92,13 +108,26 @@ h1, h2, h3, h4, h5, h6 {
   overflow: hidden;
 }
 
-/* Variación Accent */
+/* Variación Accent (Warning / Alert) */
 .btn-accent {
+  display: inline-block;
+  font-weight: 900;
+  padding: 1rem 2rem;
+  border: 3px solid var(--foreground);
+  border-radius: 12px;
   background-color: var(--accent);
   color: #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-cartoon);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Hovers y Actives para todos los botones */
+/* Hovers y Actives */
 .btn-cartoon:hover, .btn-sketchy:hover, .btn-journal:hover, .btn-accent:hover {
   transform: scale(1.02) translate(-2px, -2px);
   box-shadow: 6px 6px 0px 0px var(--foreground);
@@ -114,32 +143,23 @@ h1, h2, h3, h4, h5, h6 {
 .cartoon-card, 
 .card-sketchy, 
 .card-journal {
-  background-color: var(--background);
+  background-color: var(--tertiary);
   color: var(--foreground);
-  border: 3px solid var(--foreground);
+  border: 3px solid var(--neutral);
   border-radius: 20px;
   box-shadow: var(--shadow-cartoon);
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   padding: 2rem;
   position: relative;
 }
 
-/* Ajuste específico para cards blancas en light mode que deben ser oscuras en dark mode */
-.bg-white {
-  background-color: #ffffff !important;
-}
-
-.dark .bg-white {
-  background-color: var(--tertiary) !important;
-}
-
 .dark .cartoon-card {
   background-color: var(--tertiary);
+  border-color: var(--neutral);
 }
 
 .cartoon-card:hover, .card-sketchy:hover, .card-journal:hover {
   transform: translate(-4px, -4px) scale(1.01);
-  box-shadow: 12px 12px 0px 0px var(--foreground);
+  box-shadow: 10px 10px 0px 0px var(--foreground);
 }
 
 /* Bordes orgánicos */
@@ -158,5 +178,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .hippie-gradient {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--tertiary) 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, #361542 100%);
 }
+
