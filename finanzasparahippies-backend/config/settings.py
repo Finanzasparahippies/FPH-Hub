@@ -122,20 +122,22 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CSRF_TRUSTED_ORIGINS = [
+CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[
     "https://finanzasparahippies.com",
     "https://www.finanzasparahippies.com",
+    "https://staging.finanzasparahippies.com",
     "https://localhost"
-]
+])
 
 #CORS
-CORS_ALLOWED_ORIGINS = [
+CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "https://www.finanzasparahippies.com",
     "https://finanzasparahippies.com",
+    "https://staging.finanzasparahippies.com",
     "https://localhost"
-]
+])
 
 CORS_ALLOW_CREDENTIALS = True
 
