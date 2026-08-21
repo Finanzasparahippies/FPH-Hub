@@ -11,7 +11,7 @@ upstream fph_backend {
 # --- REDIRECT HTTP TO HTTPS ---
 server {
     listen 80;
-    server_name finanzasparahippies.com www.finanzasparahippies.com staging.finanzasparahippies.com nectarlabs.dev www.nectarlabs.dev localhost;
+    server_name finanzasparahippies.com www.finanzasparahippies.com staging.finanzasparahippies.com nectarlabs.dev www.nectarlabs.dev losplacosones.nectarlabs.dev localhost;
 
     location /.well-known/acme-challenge/ {
         root /var/www/certbot;
@@ -147,5 +147,45 @@ server {
         # Timeout extendido para WebSockets HMR Next.js Staging
         proxy_read_timeout 3600s;
         proxy_send_timeout 3600s;
+    }
+}
+
+# --- LOS PLACOSONES (HTTPS) ---
+server {
+    listen 443 ssl;
+    server_name losplacosones.nectarlabs.dev;
+
+    ssl_certificate ${CEVICHE_SSL_CERT_PATH};
+    ssl_certificate_key ${CEVICHE_SSL_KEY_PATH};
+
+    location /static/ {
+        alias /app/ceviche_static/;
+    }
+
+    location /media/ {
+        alias /app/ceviche_media/;
+    }
+
+    location ~ ^/(api|admin) {
+        resolver 127.0.0.11 valid=30s;
+        set $upstream_ceviche_back http://ceviche_backend:8000;
+        proxy_pass $upstream_ceviche_back;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location / {
+        resolver 127.0.0.11 valid=30s;
+        set $upstream_ceviche_front http://ceviche_frontend:3000;
+        proxy_pass $upstream_ceviche_front;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
